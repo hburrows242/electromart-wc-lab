@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ElectroMart CCC</title>
+  <meta name="description" content="Cash conversion cycle calculator for the ElectroMart working capital case.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>ElectroMart CCC</h1>
+    <p class="sub">How long a dollar is tied up in operations, before and after the working capital changes.</p>
+  </header>
+
+  <main>
+    <p id="status" class="status">Loading the statements…</p>
+
+    <section id="cycle-section" hidden>
+      <h2>Cash conversion cycle</h2>
+      <table class="num-table">
+        <thead>
+          <tr><th>Measure (days)</th><th>Before</th><th>After</th><th>Change</th></tr>
+        </thead>
+        <tbody id="cycle-body"></tbody>
+      </table>
+      <p class="note" id="cycle-note"></p>
+    </section>
+
+    <section id="cash-section" hidden>
+      <h2>Cash freed by each lever</h2>
+      <table class="num-table">
+        <thead>
+          <tr><th>Lever</th><th>Before</th><th>After</th><th>Cash freed</th></tr>
+        </thead>
+        <tbody id="cash-body"></tbody>
+      </table>
+      <p class="note">Cash freed comes from the balance sheet: a drop in inventory or receivables frees cash, and a rise in accounts payable frees cash. The line under each lever checks it from the days: days changed × annual COGS (or revenue) / days in the year.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>FIN 4150 · Working capital lab. Everything is calculated in your browser from the files in <code>data/</code>.</p>
+  </footer>
+
+  <script src="ccc.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
