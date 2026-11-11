@@ -1,0 +1,174 @@
+:root {
+  --bg: #f7f7f5;
+  --card: #ffffff;
+  --text: #1d2125;
+  --muted: #5f6870;
+  --line: #dde1e4;
+  --accent: #b3122e; /* Utah Tech red */
+  --neg: #b3122e;
+  --error-bg: #fdecee;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #15181b;
+    --card: #1f2327;
+    --text: #e9ecee;
+    --muted: #a3acb4;
+    --line: #353b41;
+    --accent: #ff6b81;
+    --neg: #ff8a9b;
+    --error-bg: #3a1d22;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.45;
+}
+
+header, main, footer {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+header { padding-top: 24px; }
+
+h1 { margin: 0; font-size: 1.6rem; color: var(--accent); }
+h2 { margin: 0 0 12px; font-size: 1.15rem; }
+
+.sub { margin: 4px 0 16px; color: var(--muted); }
+
+section {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.status { color: var(--muted); }
+.status.error {
+  color: var(--text);
+  background: var(--error-bg);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.num-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.num-table th, .num-table td {
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--line);
+  text-align: right;
+  vertical-align: top;
+}
+
+.num-table thead th {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.num-table th:first-child { text-align: left; }
+.num-table tbody th { font-weight: 600; }
+
+.num-table tr.total th, .num-table tr.total td {
+  border-top: 2px solid var(--text);
+  border-bottom: none;
+  font-weight: 700;
+}
+
+.formula {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.neg { color: var(--neg); }
+
+.note { font-size: 0.85rem; color: var(--muted); margin: 12px 0 0; }
+
+.note.top { margin: 0 0 12px; }
+
+h3 { margin: 20px 0 8px; font-size: 1rem; }
+
+.buttons { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+
+button {
+  flex: 1 1 130px;
+  min-height: 44px;
+  padding: 8px 12px;
+  font: inherit;
+  font-weight: 600;
+  color: var(--accent);
+  background: transparent;
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+  cursor: pointer;
+}
+button:active { background: var(--accent); color: var(--card); }
+
+.slider {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 8px;
+  margin-bottom: 14px;
+}
+.slider label { font-weight: 600; font-size: 0.9rem; }
+.slider output { font-variant-numeric: tabular-nums; font-weight: 700; white-space: nowrap; }
+.slider input[type="range"] {
+  grid-column: 1 / -1;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  height: 32px;
+  accent-color: var(--accent);
+}
+
+.big {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 4px 12px;
+  padding: 12px;
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+}
+.big-label { font-weight: 600; }
+.big-value { font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.facts {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 12px;
+  margin: 0;
+}
+.facts dt { font-size: 0.9rem; }
+.facts dd { margin: 0; text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+footer { color: var(--muted); font-size: 0.8rem; padding-bottom: 24px; }
+
+code { font-size: 0.9em; }
+
+/* Phone widths: tighter cells so four columns fit at 375px with no sideways scroll. */
+@media (max-width: 480px) {
+  section { padding: 12px 10px; }
+  .num-table { font-size: 0.85rem; }
+  .num-table th, .num-table td { padding: 7px 3px; }
+  .formula { font-size: 0.68rem; }
+}
