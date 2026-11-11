@@ -102,6 +102,65 @@ section {
 
 .note { font-size: 0.85rem; color: var(--muted); margin: 12px 0 0; }
 
+.note.top { margin: 0 0 12px; }
+
+h3 { margin: 20px 0 8px; font-size: 1rem; }
+
+.buttons { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+
+button {
+  flex: 1 1 130px;
+  min-height: 44px;
+  padding: 8px 12px;
+  font: inherit;
+  font-weight: 600;
+  color: var(--accent);
+  background: transparent;
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+  cursor: pointer;
+}
+button:active { background: var(--accent); color: var(--card); }
+
+.slider {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 8px;
+  margin-bottom: 14px;
+}
+.slider label { font-weight: 600; font-size: 0.9rem; }
+.slider output { font-variant-numeric: tabular-nums; font-weight: 700; white-space: nowrap; }
+.slider input[type="range"] {
+  grid-column: 1 / -1;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  height: 32px;
+  accent-color: var(--accent);
+}
+
+.big {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 4px 12px;
+  padding: 12px;
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+}
+.big-label { font-weight: 600; }
+.big-value { font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.facts {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 12px;
+  margin: 0;
+}
+.facts dt { font-size: 0.9rem; }
+.facts dd { margin: 0; text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+
 footer { color: var(--muted); font-size: 0.8rem; padding-bottom: 24px; }
 
 code { font-size: 0.9em; }

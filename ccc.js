@@ -47,7 +47,21 @@
     inventory: 'asset',
     accounts_receivable: 'asset',
     accounts_payable: 'liability_or_equity',
+    notes_payable: 'liability_or_equity',
   };
+
+  // The assumptions the calculations need from data/assumptions.csv.
+  const REQUIRED_ASSUMPTIONS = ['days_in_year', 'bank_rate', 'supplier_discount', 'discount_days', 'net_days'];
+
+  // Returns a list of problems with an assumptions object (empty if none).
+  function checkAssumptions(a) {
+    const problems = [];
+    REQUIRED_ASSUMPTIONS.forEach(function (name) {
+      if (!isFinite(a[name])) problems.push('Missing assumption: ' + name);
+    });
+    if (a.days_in_year <= 0) problems.push('days_in_year must be more than zero');
+    return problems;
+  }
 
   // Returns a list of problems with a statements object (empty if none).
   function checkStatements(s) {
@@ -116,6 +130,60 @@
     };
   }
 
+  // ---- What-if levers ----
+  // Revenue and COGS are held at their Before values for every lever.
+
+  // The balances a set of day counts implies: days × annual COGS (or revenue) / days in year.
+  function impliedBalances(dioDays, dsoDays, dpoDays, before, daysInYear) {
+    return {
+      inventory: dioDays * before.cogs / daysInYear,
+      receivables: dsoDays * before.revenue / daysInYear,
+      payables: dpoDays * before.cogs / daysInYear,
+    };
+  }
+
+  // Interest saved each year if every freed dollar pays down the bank line.
+  // The line can't be paid below zero, so the saving is capped at its Before balance.
+  // If cash freed is negative, ElectroMart borrows more and the "saving" is negative.
+  function interestSaved(cashFreedTotal, bankLineBefore, bankRate) {
+    return Math.min(cashFreedTotal, bankLineBefore) * bankRate;
+  }
+
+  // Days paid past the supplier's due date. Never less than zero.
+  function daysPastDue(dpoDays, netDays) { return Math.max(0, dpoDays - netDays); }
+
+  // Nominal annual cost of skipping the supplier discount:
+  //   d / (1 − d) × days in year / (days paid − discount days)
+  // Returns null if ElectroMart pays within the discount period (it takes the discount).
+  function discountCost(discount, dpoDays, discountDays, daysInYear) {
+    if (dpoDays <= discountDays) return null;
+    return discount / (1 - discount) * daysInYear / (dpoDays - discountDays);
+  }
+
+  // Everything the What-if section shows for one set of slider values.
+  function whatIf(dioDays, dsoDays, dpoDays, before, assumptions) {
+    const days = assumptions.days_in_year;
+    const bal = impliedBalances(dioDays, dsoDays, dpoDays, before, days);
+    const freed = {
+      inventory: before.inventory - bal.inventory,
+      receivables: before.accounts_receivable - bal.receivables,
+      payables: bal.payables - before.accounts_payable,
+    };
+    freed.total = freed.inventory + freed.receivables + freed.payables;
+    const cost = discountCost(assumptions.supplier_discount, dpoDays, assumptions.discount_days, days);
+    return {
+      ccc: ccc(dioDays, dsoDays, dpoDays),
+      balances: bal,
+      cashFreed: freed,
+      interestSaved: interestSaved(freed.total, before.notes_payable, assumptions.bank_rate),
+      daysPastDue: daysPastDue(dpoDays, assumptions.net_days),
+      takesDiscount: cost === null,
+      discountCost: cost, // nominal annual rate, or null if the discount is taken
+      // Dollars of discount given up in a year: the discount × annual purchases (= COGS).
+      discountDollars: cost === null ? 0 : assumptions.supplier_discount * before.cogs,
+    };
+  }
+
   // ---- Formatting (for display only) ----
 
   function fmtDays(x) {
@@ -147,6 +215,12 @@
     ccc: ccc,
     cycle: cycle,
     cashFreed: cashFreed,
+    checkAssumptions: checkAssumptions,
+    impliedBalances: impliedBalances,
+    interestSaved: interestSaved,
+    daysPastDue: daysPastDue,
+    discountCost: discountCost,
+    whatIf: whatIf,
     fmtDays: fmtDays,
     fmtDollars: fmtDollars,
     fmtNumber: fmtNumber,

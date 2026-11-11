@@ -37,6 +37,64 @@
       </table>
       <p class="note">Cash freed comes from the balance sheet: a drop in inventory or receivables frees cash, and a rise in accounts payable frees cash. The line under each lever checks it from the days: days changed × annual COGS (or revenue) / days in the year.</p>
     </section>
+
+    <section id="whatif-section" hidden>
+      <h2>What-if</h2>
+      <p class="note top">Move a slider to change the days. Revenue and COGS stay at their Before values.</p>
+
+      <div class="buttons">
+        <button type="button" id="set-before">Set to Before</button>
+        <button type="button" id="set-after">Set to After</button>
+      </div>
+
+      <div class="slider">
+        <label for="s-dio">DIO: days inventory is held</label>
+        <output id="o-dio" for="s-dio"></output>
+        <input type="range" id="s-dio" min="0" max="120" step="any">
+      </div>
+      <div class="slider">
+        <label for="s-dso">DSO: days customers take to pay</label>
+        <output id="o-dso" for="s-dso"></output>
+        <input type="range" id="s-dso" min="0" max="120" step="any">
+      </div>
+      <div class="slider">
+        <label for="s-dpo">DPO: days ElectroMart takes to pay suppliers</label>
+        <output id="o-dpo" for="s-dpo"></output>
+        <input type="range" id="s-dpo" min="0" max="120" step="any">
+      </div>
+
+      <div class="big" aria-live="polite">
+        <span class="big-label">Cash conversion cycle (DIO + DSO − DPO)</span>
+        <span class="big-value" id="w-ccc"></span>
+      </div>
+
+      <h3>Balances these days imply</h3>
+      <table class="num-table">
+        <thead>
+          <tr><th>Balance</th><th>Implied</th><th>Cash freed vs Before</th></tr>
+        </thead>
+        <tbody id="whatif-body"></tbody>
+      </table>
+      <p class="note">Implied balance = days × annual COGS (or revenue) / days in the year. A positive number is cash released. A negative number is cash tied up.</p>
+
+      <h3>Bank line</h3>
+      <dl class="facts">
+        <dt id="w-interest-label"></dt>
+        <dd id="w-interest"></dd>
+      </dl>
+      <p class="note" id="w-interest-note"></p>
+
+      <h3>Supplier payment check</h3>
+      <dl class="facts">
+        <dt id="w-late-label"></dt>
+        <dd id="w-late"></dd>
+        <dt id="w-cost-label"></dt>
+        <dd id="w-cost"></dd>
+        <dt id="w-dollars-label"></dt>
+        <dd id="w-dollars"></dd>
+      </dl>
+      <p class="note" id="w-cost-note"></p>
+    </section>
   </main>
 
   <footer>
